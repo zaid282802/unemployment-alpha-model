@@ -74,12 +74,7 @@ START_DATE=2010-01-01
 END_DATE=2024-12-31
 ```
 
-3. Install dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-4. Run backtest:
+3. Run backtest:
 ```bash
 python employment_strategy.py
 ```
@@ -97,15 +92,10 @@ unemployment_alpha_model/
 │   ├── features/surprise_calculator.py
 │   ├── models/signal_generator.py
 │   ├── backtest/engine.py
-│   └── run_backtest.py
-├── requirements.txt
-├── .env.example
 └── README.md
 ```
 
 The `employment_strategy.py` script is standalone and generates the results above. The `src/` folder contains a modular OOP implementation demonstrating software architecture with reusable components.
-
-## Key Insights
 
 **Why Employment Data?**
 
@@ -125,20 +115,6 @@ The strategy is designed for downside protection, not maximum returns. The conse
 2. Transaction costs in real markets may exceed 5 bps assumption
 3. Assumes employment surprises remain predictive (regime change risk)
 4. Monthly rebalancing may not capture intra-month opportunities
-
-## Dependencies
-
-```
-pandas>=2.0.0
-numpy>=1.24.0
-scipy>=1.10.0
-fredapi>=0.5.1
-yfinance>=0.2.28
-python-dotenv>=1.0.0
-pykalman>=0.9.5
-```
-
-See `requirements.txt` for complete list.
 
 ## Sample Output
 
@@ -164,33 +140,3 @@ TRANSACTION COSTS:
   Total Costs:         $      210.00
   Number of Rebalances: 14
 ```
-
-## Interview Talking Points
-
-**60-second pitch:**
-
-"I built a systematic macro strategy that trades employment data surprises from FRED. The model fetches unemployment, jobless claims, payrolls, and participation data, calculates surprises versus a 12-month moving average, and generates a composite index weighted by economic importance.
-
-When the smoothed composite signal exceeds +0.5 standard deviations, the strategy goes Risk-ON with 80% SPY and 20% TLT. Below -0.5, it goes Risk-OFF with 20% SPY and 80% TLT. Otherwise, it stays neutral at 50/50.
-
-Over a 14-year backtest from 2010 to 2024, the strategy achieved a 0.81 Sharpe ratio with 24% better downside protection than SPY, though it underperformed in absolute returns due to the conservative allocation during a historic bull market."
-
-**Common questions:**
-
-Q: Why underperform SPY?
-A: The strategy is designed for downside protection, not maximum returns. The value proposition is reducing max drawdown from -33% to -25%.
-
-Q: What would you improve?
-A: (1) Machine learning to predict employment surprises, (2) Regime detection to avoid high volatility periods, (3) Integration with live data feeds for real-time trading.
-
-## Disclaimer
-
-This project is for educational and interview purposes only. Not financial advice. Past performance does not guarantee future results.
-
-## License
-
-MIT License
-
----
-
-Last Updated: January 2026
