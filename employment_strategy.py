@@ -1,7 +1,10 @@
-"""
-Complete Working Backtest - Unemployment Alpha Model
-Uses real FRED data and yfinance price data
-"""
+# Employment Alpha Strategy - Complete Backtest
+# Uses FRED employment data (UNRATE, ICSA, PAYEMS, CIVPART) and yfinance price data
+#
+# DATA SOURCES (for recruiter questions):
+# - FRED (Federal Reserve Economic Data): 4 employment indicators
+# - Yahoo Finance: SPY, TLT daily prices
+# - Frequency: Monthly signals, daily execution
 
 import pandas as pd
 import numpy as np
@@ -14,13 +17,7 @@ import os
 load_dotenv()
 FRED_API_KEY = os.getenv('FRED_API_KEY')
 
-print("=" * 80)
-print("UNEMPLOYMENT ALPHA MODEL - FULL BACKTEST")
-print("=" * 80)
-print()
-
-# ==================== STEP 1: FETCH FRED DATA ====================
-print("[1/6] Fetching employment data from FRED...")
+# Fetch employment data from FRED
 
 try:
     from fredapi import Fred
@@ -35,18 +32,13 @@ try:
     payrolls = fred.get_series('PAYEMS', start_date, end_date)
     participation = fred.get_series('CIVPART', start_date, end_date)
 
-    print(f"   Unemployment Rate: {len(unrate)} observations")
-    print(f"   Initial Claims: {len(claims)} observations")
-    print(f"   Payrolls: {len(payrolls)} observations")
-    print(f"   Participation: {len(participation)} observations")
 
 except Exception as e:
     print(f"   Error: {e}")
     print("   Check your FRED API key")
     exit(1)
 
-# ==================== STEP 2: CALCULATE SURPRISES ====================
-print("\n[2/6] Calculating employment surprises...")
+# Calculate employment surprises (actual vs 12-month moving average)
 
 # Convert claims to monthly
 claims_monthly = claims.resample('MS').mean()
@@ -63,7 +55,6 @@ claims_monthly.name = 'initial_claims'
 df = df.join(claims_monthly, how='left')
 df = df.ffill()
 
-# Calculate surprises (actual vs 12-month moving average)
 lookback = 12
 
 df['unrate_ma'] = df['unemployment_rate'].rolling(lookback).mean()
@@ -88,12 +79,8 @@ df['composite_surprise'] = (
 # Simple smoothing (3-month MA)
 df['smoothed_surprise'] = df['composite_surprise'].rolling(3).mean()
 
-print(f"   Surprise range: [{df['smoothed_surprise'].min():.2f}, {df['smoothed_surprise'].max():.2f}]")
+# Generate trading signals based on thresholds
 
-# ==================== STEP 3: GENERATE SIGNALS ====================
-print("\n[3/6] Generating trading signals...")
-
-# Generate signals based on thresholds
 df['signal'] = 0
 df.loc[df['smoothed_surprise'] > 0.5, 'signal'] = 1    # Risk-ON
 df.loc[df['smoothed_surprise'] < -0.5, 'signal'] = -1  # Risk-OFF
@@ -108,17 +95,7 @@ df.loc[df['signal'] == 1, 'tlt_weight'] = 0.2
 df.loc[df['signal'] == -1, 'spy_weight'] = 0.2
 df.loc[df['signal'] == -1, 'tlt_weight'] = 0.8
 
-risk_on = (df['signal'] == 1).sum()
-risk_off = (df['signal'] == -1).sum()
-neutral = (df['signal'] == 0).sum()
-total = len(df)
-
-print(f"   Risk-ON: {risk_on} months ({risk_on/total*100:.1f}%)")
-print(f"   Risk-OFF: {risk_off} months ({risk_off/total*100:.1f}%)")
-print(f"   Neutral: {neutral} months ({neutral/total*100:.1f}%)")
-
-# ==================== STEP 4: FETCH PRICE DATA ====================
-print("\n[4/6] Fetching SPY/TLT price data from yfinance...")
+# Fetch SPY/TLT price data from yfinance
 
 try:
     import yfinance as yf
@@ -134,14 +111,9 @@ try:
         'tlt_price': tlt_hist['Close']
     })
 
-    # Remove timezone info to match FRED data
     prices.index = prices.index.tz_localize(None)
-
     prices['spy_return'] = prices['spy_price'].pct_change()
     prices['tlt_return'] = prices['tlt_price'].pct_change()
-
-    print(f"   SPY: {len(prices)} days")
-    print(f"   TLT: {len(prices)} days")
 
 except Exception as e:
     print(f"   Error: {e}")
@@ -149,8 +121,7 @@ except Exception as e:
     traceback.print_exc()
     exit(1)
 
-# ==================== STEP 5: RUN BACKTEST ====================
-print("\n[5/6] Running backtest simulation...")
+# Run backtest simulation
 
 # Resample signals to daily frequency
 signals_daily = df[['spy_weight', 'tlt_weight']].reindex(prices.index, method='ffill')
@@ -178,10 +149,7 @@ backtest['tlt_cumulative'] = (1 + backtest['tlt_return'].fillna(0)).cumprod()
 initial_capital = 100000
 backtest['portfolio_value'] = initial_capital * backtest['strategy_cumulative']
 
-print(f"   Simulation complete: {len(backtest)} days")
-
-# ==================== STEP 6: CALCULATE METRICS ====================
-print("\n[6/6] Calculating performance metrics...")
+# Calculate performance metrics
 
 # Strategy metrics
 returns = backtest['portfolio_return_net'].dropna()
@@ -209,10 +177,8 @@ n_trades = (backtest['weight_change'] > 0.01).sum()
 monthly_returns = backtest['portfolio_return_net'].resample('M').sum()
 win_rate = (monthly_returns > 0).sum() / len(monthly_returns) * 100
 
-# ==================== DISPLAY RESULTS ====================
-print("\n" + "=" * 80)
+# Print results
 print("BACKTEST RESULTS (2010-2024)")
-print("=" * 80)
 
 print("\nSTRATEGY PERFORMANCE:")
 print(f"  Total Return:        {total_return:>8.2f}%")
@@ -231,9 +197,7 @@ print("\nTRANSACTION COSTS:")
 print(f"  Total Costs:         ${total_tc:>12,.2f}")
 print(f"  Number of Rebalances: {n_trades}")
 
-print("\n" + "=" * 80)
-print("ANALYSIS:")
-print("=" * 80)
+print("\nANALYSIS:")
 
 print(f"\nAlpha vs SPY: {total_return - spy_total_return:+.2f}%")
 print(f"Risk-Adjusted Alpha: Sharpe {sharpe_ratio:.2f} vs {spy_sharpe:.2f}")
@@ -245,6 +209,3 @@ results_dir.mkdir(exist_ok=True)
 
 backtest.to_csv(results_dir / 'full_backtest_results.csv')
 df.to_csv(results_dir / 'employment_signals.csv')
-
-print(f"\nResults saved to: {results_dir.absolute()}")
-print("=" * 80)
