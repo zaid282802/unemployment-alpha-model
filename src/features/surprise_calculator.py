@@ -1,3 +1,8 @@
+# Employment Surprise Calculator
+# Calculates z-scores for 4 employment indicators vs 12-month rolling mean/std
+# Combines into weighted composite surprise index
+# Negative unemployment/claims = positive surprise (good for economy)
+
 import pandas as pd
 import numpy as np
 from scipy import stats

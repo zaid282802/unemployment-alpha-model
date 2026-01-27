@@ -1,3 +1,8 @@
+# Backtest Engine
+# Runs portfolio simulation with transaction costs (5 bps default)
+# Calculates Sharpe, Sortino, max drawdown, win rate metrics
+# Fetches SPY/TLT price data from yfinance
+
 import pandas as pd
 import numpy as np
 import warnings

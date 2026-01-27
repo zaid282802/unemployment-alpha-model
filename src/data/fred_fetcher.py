@@ -1,3 +1,8 @@
+# FRED Data Fetcher
+# Pulls employment indicators from Federal Reserve Economic Data API
+# Handles monthly resampling for jobless claims (weekly → monthly)
+# Falls back to demo mode if API key not provided
+
 import pandas as pd
 import numpy as np
 from datetime import datetime

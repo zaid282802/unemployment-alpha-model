@@ -1,3 +1,8 @@
+# Signal Generator
+# Converts composite surprise index into Risk-ON/Neutral/Risk-OFF signals
+# Thresholds: +0.5σ (Risk-ON), -0.5σ (Risk-OFF), else Neutral
+# Maps signals to SPY/TLT allocation weights
+
 import pandas as pd
 import numpy as np
 

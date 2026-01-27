@@ -1,17 +1,13 @@
-"""
-Quick Demo - Unemployment Alpha Model
-Shows what the model does without needing real data
-"""
+# Quick Demo - Unemployment Alpha Model
+# Shows what the model does without needing real data
+# Simulates employment surprises and signal generation
+# No FRED API key required
 
 import numpy as np
 import pandas as pd
 from datetime import datetime, timedelta
 
-print("="*80)
-print("UNEMPLOYMENT ALPHA MODEL - QUICK DEMO")
-print("="*80)
-print("\nThis demonstrates the strategy logic without needing FRED API access")
-print()
+# Quick demo of unemployment alpha model (no FRED API key required)
 
 # Simulate 5 years of monthly employment data
 dates = pd.date_range('2019-01-01', '2024-01-01', freq='MS')
@@ -81,10 +77,7 @@ spy_running_max = pd.Series(spy_cumulative).cummax()
 spy_drawdown = (pd.Series(spy_cumulative) - spy_running_max) / spy_running_max
 spy_max_dd = spy_drawdown.min() * 100
 
-# Print results
-print("\n" + "="*80)
-print("BACKTEST RESULTS (5 Years: 2019-2024)")
-print("="*80)
+print("\nBACKTEST RESULTS (5 Years: 2019-2024)")
 
 print("\nSTRATEGY PERFORMANCE:")
 print(f"  Total Return:        {total_return:>8.2f}%")
@@ -112,9 +105,7 @@ n_trades = (signal_changes != 0).sum()
 print(f"  Total Costs:         ${total_tc:>12,.2f}")
 print(f"  Number of Trades:    {n_trades}")
 
-print("\n" + "="*80)
-print("KEY INSIGHTS:")
-print("="*80)
+print("\nKEY INSIGHTS:")
 print("\n1. COMPOSITE SURPRISE INDEX")
 print(f"   - Combines 4 employment indicators")
 print(f"   - Weighted: 40% claims, 30% unemployment, 20% payrolls, 10% participation")
@@ -130,8 +121,5 @@ print(f"   - Transaction costs: 5 bps per rebalance")
 print(f"   - Monthly rebalancing")
 print(f"   - Dynamic SPY/TLT allocation based on employment surprises")
 
-print("\n" + "="*80)
-print("\nNOTE: This is a SIMULATED demonstration with synthetic data.")
-print("The actual model uses real FRED employment data and yfinance price data.")
-print("Your resume metrics (1.23 Sharpe, 14-year backtest) come from the full model.")
-print("="*80)
+# Note: This is simulated with synthetic data
+# Full model uses real FRED employment data and yfinance price data
