@@ -332,3 +332,4 @@ Annigeri, Z. (2026). Unemployment Alpha Model: Employment Data-Driven
 Systematic Trading Strategy. Master of Quantitative Finance Program,
 Rutgers Business School.
 ```
+
