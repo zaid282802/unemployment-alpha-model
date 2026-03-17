@@ -1,5 +1,7 @@
 # Unemployment Alpha Model
 
+**November 2025** | Zaid Annigeri | Master of Quantitative Finance, Rutgers Business School
+
 > Systematic macro trading strategy using employment data surprises to generate dynamic SPY/TLT allocation signals with superior downside protection.
 
 ## Project Overview
