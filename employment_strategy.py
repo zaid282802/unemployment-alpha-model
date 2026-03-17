@@ -1,7 +1,7 @@
 # Employment Alpha Strategy - Complete Backtest
 # Uses FRED employment data (UNRATE, ICSA, PAYEMS, CIVPART) and yfinance price data
 #
-# DATA SOURCES (for recruiter questions):
+# DATA SOURCES:
 # - FRED (Federal Reserve Economic Data): 4 employment indicators
 # - Yahoo Finance: SPY, TLT daily prices
 # - Frequency: Monthly signals, daily execution

@@ -1,5 +1,5 @@
 # Unemployment Alpha Model - Visualization Generator
-# Creates 8 professional portfolio charts (300 DPI)
+# Creates 8 portfolio charts (300 DPI)
 # Usage: python create_visualizations.py
 
 import pandas as pd

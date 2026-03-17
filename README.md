@@ -2,11 +2,11 @@
 
 **November 2025** | Zaid Annigeri | Master of Quantitative Finance, Rutgers Business School
 
-> Systematic macro trading strategy using employment data surprises to generate dynamic SPY/TLT allocation signals with superior downside protection.
+> Systematic macro trading strategy using employment data surprises to generate dynamic SPY/TLT allocation signals with a focus on downside protection.
 
 ## Project Overview
 
-This project implements a defensive trading strategy based on employment data from FRED (Federal Reserve Economic Data). The core insight: employment surprises reveal economic regime shifts before markets fully adjust, enabling timely risk-on/risk-off positioning.
+A defensive trading strategy based on employment data from FRED (Federal Reserve Economic Data). The core insight: employment surprises reveal economic regime shifts before markets fully adjust, enabling timely risk-on/risk-off positioning.
 
 **Key Finding**: The strategy achieves **24% better drawdown protection** than SPY buy-and-hold (-25.5% vs -33.7%) with similar Sharpe ratio (0.81 vs 0.82) over 14 years (2010-2024).
 
@@ -28,7 +28,7 @@ These are combined into a composite surprise index that generates dynamic alloca
 | **Total Return** | 271% | 926% | 318% |
 | **Sharpe Ratio** | **0.81** | 0.82 | 0.65 |
 | **Max Drawdown** | **-25.5%** | -33.7% | -28.1% |
-| **Win Rate** | **66.1%** | N/A | N/A |
+| **Win Rate** | **~65%** | N/A | N/A |
 | **Volatility** | **12%** | 15% | 10% |
 | **Sortino Ratio** | **1.12** | 1.18 | 0.89 |
 
@@ -54,7 +54,7 @@ numpy, pandas, yfinance, fredapi, matplotlib, seaborn, scipy
 ### Installation
 ```bash
 # Clone repository
-git clone https://github.com/yourusername/unemployment-alpha-model.git
+git clone https://github.com/Zaid282802/unemployment-alpha-model.git
 cd unemployment-alpha-model
 
 # Install dependencies
@@ -90,7 +90,7 @@ python create_visualizations.py
 
 **Output**:
 - `employment_strategy.py`: Fetches FRED data, runs backtest, saves results to `results/`
-- `create_visualizations.py`: Generates 8 professional charts (300 DPI) saved to `visualizations/`
+- `create_visualizations.py`: Generates 8 charts (300 DPI) saved to `visualizations/`
 - Results saved as CSV files for further analysis
 
 ---
@@ -99,36 +99,36 @@ python create_visualizations.py
 
 ```
 unemployment_alpha_model/
-├── employment_strategy.py          # Main backtest script (253 lines)
-├── demo_backtest.py                # Quick demo with simulated data (137 lines)
-├── create_visualizations.py        # Generate 8 portfolio charts (481 lines)
-├── src/                            # Modular OOP implementation
+├── employment_strategy.py          # Main backtest script (211 lines)
+├── demo_backtest.py                # Quick demo with simulated data (125 lines)
+├── create_visualizations.py        # Generate 8 portfolio charts (411 lines)
+├── src/                            # Modular OOP implementation (not used by main scripts)
 │   ├── data/fred_fetcher.py        # FRED data fetcher (117 lines)
 │   ├── features/surprise_calculator.py  # Z-score surprise calculation (94 lines)
 │   ├── models/signal_generator.py  # Signal generation logic (87 lines)
 │   └── backtest/engine.py          # Backtest engine with metrics (212 lines)
 ├── results/                        # Generated CSV files (backtest results, signals)
 ├── report/                         # LaTeX report and PDF
-│   ├── Unemployment_Alpha_Report.tex   # Comprehensive LaTeX report (1,300+ lines)
+│   ├── Unemployment_Alpha_Report.tex   # LaTeX report (1,300+ lines)
 ├── requirements.txt                # Python dependencies
 └── README.md                       # This file
 ```
 
-**Total Code**: 1,381 lines of production-quality Python
+**Total Code**: ~1,257 lines of Python
 
 ---
 
 ## Portfolio Visualizations
 
-**8 publication-quality charts** demonstrating strategy performance:
+**8 charts** showing strategy performance:
 
 | Chart | Description | Key Insight |
 |-------|-------------|-------------|
-| **1. Equity Curve Comparison** | Strategy vs SPY vs 60/40 | Shows underperformance in bull market but lower volatility |
+| **1. Equity Curve Comparison** | Strategy vs SPY vs 60/40 | Underperformance in bull market but lower volatility |
 | **2. Drawdown Comparison** | Time series + bar chart | **24% better max drawdown** (-25.5% vs -33.7%) |
 | **3. Allocation Timeline** | Risk-ON/Neutral/OFF regimes | Signal breakdown: 37% Risk-ON, 47% Neutral, 16% Risk-OFF |
 | **4. Signal Evolution** | Composite surprise index | Shows signal generation logic with ±0.5σ thresholds |
-| **5. Rolling 12-Month Sharpe** | Time-varying performance | Demonstrates consistency across market regimes |
+| **5. Rolling 12-Month Sharpe** | Time-varying performance | Sharpe ratio across market regimes |
 | **6. Factor Attribution** | Indicator contributions | Jobless claims (38%) and unemployment rate (32%) dominate |
 | **7. COVID-19 Case Study** | 3-panel detailed analysis | **-12% vs SPY -34%** during 2020 crash |
 | **8. Transaction Cost Sensitivity** | Sharpe vs bps | Strategy robust to execution costs (Sharpe 0.81 → 0.76 at 20 bps) |
@@ -206,10 +206,10 @@ Strategy remains robust to execution costs.
 
 | Period | Sharpe Ratio | Win Rate | Max Drawdown |
 |--------|--------------|----------|--------------|
-| **In-Sample (2010-2015)** | 0.83 | 67.2% | -16.2% |
-| **Out-of-Sample (2016-2024)** | 0.79 | 64.8% | -27.1% |
+| **In-Sample (2010-2015)** | 0.83 | ~67% | -16.2% |
+| **Out-of-Sample (2016-2024)** | 0.79 | ~65% | -27.1% |
 
-Performance degrades modestly (Sharpe 0.83 → 0.79), indicating **minimal overfitting**.
+Performance degrades modestly out-of-sample (Sharpe 0.83 to 0.79).
 
 ### Statistical Significance Tests
 
@@ -229,15 +229,15 @@ Performance degrades modestly (Sharpe 0.83 → 0.79), indicating **minimal overf
 
 ## Documentation
 
-### Comprehensive LaTeX Report
+### LaTeX Report
 
-A full academic report (`report/Unemployment_Alpha_Report.tex`, 1,300+ lines) covering:
+Full academic report (`report/Unemployment_Alpha_Report.tex`, 1,300+ lines) covering:
 
 - **Project Summary**: One-page quick reference with colored metrics boxes
 - **Executive Summary**: Key findings and value proposition
 - **Methodology**: Employment surprise framework, signal generation, allocation logic
 - **Results**: Performance metrics, risk analysis, benchmark comparison
-- **Visualizations**: All 8 charts with comprehensive captions
+- **Visualizations**: All 8 charts with captions
 - **Case Studies**: COVID-19 detailed timeline (8-point analysis)
 - **Validation**: Out-of-sample testing, statistical significance tests
 - **Appendices**: Transaction cost sensitivity, factor decomposition
@@ -279,7 +279,7 @@ These assets have negative correlation (~-0.3 to -0.5):
 | `fredapi` | FRED API integration for employment data |
 | `yfinance` | Historical SPY and TLT price data |
 | `scipy` | Statistical tests and signal processing |
-| `matplotlib` & `seaborn` | Professional visualization generation |
+| `matplotlib` & `seaborn` | Visualization and chart generation |
 
 ---
 
@@ -294,7 +294,7 @@ STRATEGY PERFORMANCE:
   Total Return:          271.36%
   Sharpe Ratio:            0.81
   Max Drawdown:          -25.54%
-  Win Rate (Monthly):      66.1%
+  Win Rate (Monthly):      ~65%
   Final Value:         $  371,356
 
 BENCHMARK (SPY Buy & Hold):

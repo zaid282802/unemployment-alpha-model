@@ -105,10 +105,8 @@ python create_visualizations.py
 | File | Purpose | Runtime | Output |
 |------|---------|---------|--------|
 | `employment_strategy.py` | Downloads FRED data, calculates signals, runs backtest | ~30s | 2 CSV files |
-| `create_visualizations.py` | Reads CSV files, creates 8 professional charts | ~60s | 8 PNG files |
+| `create_visualizations.py` | Reads CSV files, creates 8 charts | ~60s | 8 PNG files |
 | `demo_backtest.py` | Simplified demonstration version | ~10s | Terminal output only |
-| `kalman_filter.py` | Signal smoothing (called by other scripts) | N/A | Helper module |
-| `statistical_tests.py` | Newey-West, Welch t-test (called by others) | N/A | Helper module |
 
 ### Data Files:
 
